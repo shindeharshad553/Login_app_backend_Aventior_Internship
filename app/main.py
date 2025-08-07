@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import login
+from app.routes import register,login,home
 from . import models
 from .database import engine
 from .database import Base
@@ -19,7 +19,8 @@ app.add_middleware(
 
 )
 
+app.include_router(register.router)
 app.include_router(login.router)
-
+app.include_router(home.router)
 # to configure the database and to create the tables
 models.Base.metadata.create_all(engine)
