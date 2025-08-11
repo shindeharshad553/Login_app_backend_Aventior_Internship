@@ -4,7 +4,9 @@ from fastapi import APIRouter ,Depends
 from app.oauth2 import get_current_user
 
 
-router=APIRouter()
+router=APIRouter(
+    tags=['authenticated routes']
+)
 
 
 @router.get("/home")
