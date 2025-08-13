@@ -26,4 +26,16 @@ def login(request:OAuth2PasswordRequestForm=Depends(),db:Session=Depends(get_db)
     # if user exists and password matches then return the JWT token 
     
     access_token = JWTtokens.create_access_token(data={"sub": user.username})
-    return token_schemas.Token(access_token=access_token, token_type="bearer")
+    refresh_token=JWTtokens.create_refresh_token(data={"sub":user.username})
+    
+    token_entry=models.Token(
+        access_token=access_token,
+        refresh_token=refresh_token,
+        user_id=user.id
+    )
+    db.add(token_entry)
+    db.commit()
+    return {
+       "access_token":access_token,
+        "refresh_token":refresh_token
+    }
